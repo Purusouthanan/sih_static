@@ -3897,9 +3897,9 @@ function navigateTo(page) {
   
   // Refresh leaflet maps
   setTimeout(() => {
-    if (page === 'overview' && window.overviewMap) window.overviewMap.invalidateSize();
-    if (page === 'riskmap' && window.riskMap) window.riskMap.invalidateSize();
-  }, 50);
+    if (page === 'overview' && typeof overviewMap !== 'undefined' && overviewMap) overviewMap.invalidateSize();
+    if (page === 'riskmap' && typeof riskMap !== 'undefined' && riskMap) riskMap.invalidateSize();
+  }, 200);
 }
 
 function toggleMobileMenu() {
