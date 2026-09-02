@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VISIONX — Environmental Intelligence Network</title>
+<meta name="description" content="VISIONX: AI-powered environmental monitoring and early-warning command center for floods, fires, air pollution, and more." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<!-- LEAFLET -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div id="app">
+  <!-- ====================================================
+       SIDEBAR
+       ==================================================== -->
+  <aside id="sidebar">
+    <div class="sidebar-logo">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="logo-word">VISION<span>X</span></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,0.7);animation:pulse-green 2s infinite"></div>
+      </div>
+      <div class="logo-sub">Environmental Intelligence Network</div>
+      <div style="margin-top:6px;font-size:0.56rem;color:var(--text-muted);letter-spacing:0.1em">SIH 2026 · Team VISIONX</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+
+      <a href="index.html" class="nav-item" data-page="visionx-overview" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> VisionX Overview
+      </a>
+      <a href="live.html" class="nav-item" data-page="live" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> Live Intelligence
+        <span class="nav-badge orange">5</span>
+      </a>
+      <a href="riskmap.html" class="nav-item" data-page="riskmap" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> Risk Map
+      </a>
+      <a href="events.html" class="nav-item" data-page="events" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> Events
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="nodes.html" class="nav-item active" data-page="nodes" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> Nodes
+      </a>
+      <a href="alerts.html" class="nav-item" data-page="alerts" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> Alerts
+        <span class="nav-badge">3</span>
+      </a>
+      <a href="insights.html" class="nav-item" data-page="insights" style="text-decoration:none;">
+        <span class="nav-icon">◉</span> AI Insights
+      </a>
+
+</nav>
+
+    <div class="sidebar-health">
+      <div class="sh-title">System Health</div>
+      <div class="sh-row">
+        <span class="sh-label">Edge AI</span>
+        <div class="sh-bar-wrap"><div class="sh-bar" style="width:98%"></div></div>
+        <span class="sh-pct">98%</span>
+      </div>
+      <div class="sh-row">
+        <span class="sh-label">Gateway</span>
+        <div class="sh-bar-wrap"><div class="sh-bar" style="width:100%"></div></div>
+        <span class="sh-pct">100%</span>
+      </div>
+      <div class="sh-row">
+        <span class="sh-label">Cloud</span>
+        <div class="sh-bar-wrap"><div class="sh-bar" style="width:97%"></div></div>
+        <span class="sh-pct">97%</span>
+      </div>
+      <div class="sh-row">
+        <span class="sh-label">Sensors</span>
+        <div class="sh-bar-wrap"><div class="sh-bar" style="width:94%;background:var(--yellow)"></div></div>
+        <span class="sh-pct">94%</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ====================================================
+       MAIN
+       ==================================================== -->
+  <div id="main">
+
+    <!-- HEADER -->
+    <header id="header">
+      <button id="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+      <div class="header-left">
+        <div class="hl-title">VISION<span>X</span></div>
+        <div class="hl-sub">Environmental Intelligence Network</div>
+      </div>
+      <div class="header-center">
+        <div class="status-dot-wrap">
+          <div class="status-dot"></div>
+          <span class="status-label">System Operational</span>
+        </div>
+        <div class="status-sub">24 Nodes Online &nbsp;·&nbsp; Gateway Connected &nbsp;·&nbsp; Last sync: <span id="sync-time">12s</span> ago</div>
+      </div>
+      <div class="header-right">
+        <div class="header-divider"></div>
+        <div class="hr-item">
+          <span class="hri-val"><span class="hr-dot-green"></span>24 / 26</span>
+          <span class="hri-lbl">Nodes Online</span>
+        </div>
+        <div class="header-divider"></div>
+        <div class="hr-item">
+          <span class="hri-val" id="live-time">00:00:00</span>
+          <span class="hri-lbl">Local Time</span>
+        </div>
+        <div class="header-divider"></div>
+        <div class="header-avatar">OP</div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTAINER -->
+    <div id="page-container">
+<section class="page-section active" id="page-nodes">
+        <div class="section-header" style="margin-bottom:12px">
+          <div>
+            <div class="section-title">Sensor Nodes</div>
+            <div class="section-sub">24 Online · 2 Offline · 26 Total</div>
+          </div>
+          <span class="tag tag-info">EDGE NETWORK</span>
+        </div>
+        <div class="filter-bar">
+          <input class="filter-input" type="text" id="nodes-search" placeholder="Search node ID or location..." oninput="filterNodes()"/>
+          <select class="filter-select" id="nodes-status-filter" onchange="filterNodes()">
+            <option value="all">All Status</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+          </select>
+          <select class="filter-select" id="nodes-type-filter" onchange="filterNodes()">
+            <option value="all">All Types</option>
+            <option value="water">Water</option>
+            <option value="land">Land</option>
+            <option value="air">Air</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0">
+          <div class="nodes-table-wrap">
+            <table class="nodes-table">
+              <thead>
+                <tr>
+                  <th>Node ID</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Risk</th>
+                  <th>AI Model</th>
+                  <th>Signal</th>
+                  <th>Battery</th>
+                  <th>Last Sync</th>
+                </tr>
+              </thead>
+              <tbody id="nodes-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================
+           VISIONX OVERVIEW PAGE (SIH)
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           OVERVIEW PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           LIVE INTELLIGENCE PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           RISK MAP PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           EVENTS PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           NODES PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           ALERTS PAGE
+           ==================================================== -->
+      
+
+      <!-- ====================================================
+           AI INSIGHTS PAGE
+           ==================================================== -->
+      
+
+    </div><!-- /page-container -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ====================================================
+     EVENT MODAL
+     ==================================================== -->
+<div id="modal-overlay" onclick="closeModal(event)" style="animation:fadeIn 0.2s ease">
+  <div id="modal-box" onclick="event.stopPropagation()" style="animation:slideUp 0.22s ease">
+    <!-- Accent line -->
+    <div style="height:3px;background:linear-gradient(90deg,var(--red),var(--orange),transparent);border-radius:9px 9px 0 0"></div>
+    <div class="modal-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="modal-title" id="modal-title">FLOOD EVENT</div>
+          <span class="tag tag-critical" id="modal-sev-tag">CRITICAL</span>
+        </div>
+        <div class="modal-id" id="modal-id">VX-EVT-00127</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Risk metrics row -->
+      <div class="modal-risk-row">
+        <div class="mri-card" style="border-color:rgba(239,68,68,0.2)">
+          <div class="mri-label">Status</div>
+          <div class="mri-val" id="modal-status" style="font-size:1rem;letter-spacing:0.1em">CRITICAL</div>
+        </div>
+        <div class="mri-card" style="border-color:rgba(239,68,68,0.2)">
+          <div class="mri-label">Risk Score</div>
+          <div class="mri-val" id="modal-risk">91 / 100</div>
+        </div>
+        <div class="mri-card" style="border-color:rgba(34,197,94,0.2)">
+          <div class="mri-label">AI Confidence</div>
+          <div class="mri-val" style="color:var(--green)" id="modal-conf">95%</div>
+        </div>
+      </div>
+
+      <!-- Population callout -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+        <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:5px;padding:8px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:900;color:var(--red);line-height:1">7,240</div>
+          <div style="font-size:0.52rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px">People at Risk</div>
+        </div>
+        <div style="background:rgba(249,115,22,0.06);border:1px solid rgba(249,115,22,0.18);border-radius:5px;padding:8px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:900;color:var(--orange);line-height:1">04</div>
+          <div style="font-size:0.52rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px">Infrastructure</div>
+        </div>
+        <div style="background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.15);border-radius:5px;padding:8px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:900;color:var(--red);line-height:1">01</div>
+          <div style="font-size:0.52rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px">Hospital</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.03);border:1px solid var(--border);border-radius:5px;padding:8px;text-align:center">
+          <div style="font-size:1.2rem;font-weight:900;color:var(--text-primary);line-height:1">31</div>
+          <div style="font-size:0.52rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px">Min to Impact</div>
+        </div>
+      </div>
+
+      <!-- Prediction banner -->
+      <div style="background:linear-gradient(90deg,rgba(239,68,68,0.08),rgba(249,115,22,0.05));border:1px solid rgba(239,68,68,0.25);border-radius:5px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:0.58rem;color:var(--text-muted);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:2px">Prediction</div>
+          <div style="font-size:0.72rem;color:var(--text-secondary)" id="modal-prediction">Downstream risk increasing — Village D in 31 minutes</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:0.58rem;color:var(--text-muted)">Confidence</div>
+          <div style="font-size:1rem;font-weight:800;color:var(--red)">88%</div>
+        </div>
+      </div>
+
+      <div class="ev-grid">
+        <div>
+          <div class="ev-section-title">Event Timeline</div>
+          <div class="timeline-wrap" id="modal-timeline"></div>
+        </div>
+        <div>
+          <div class="ev-section-title">Evidence Signals</div>
+          <ul class="evidence-list" id="modal-evidence"></ul>
+          <div class="ev-section-title" style="margin-top:10px">Affected Assets</div>
+          <div style="display:flex;flex-direction:column;gap:5px" id="modal-impact"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:flex-start">
+      <button class="btn btn-cyan" onclick="modalViewOnMap()">⊙ View on Map</button>
+      <button class="btn btn-red" id="modal-esc-btn" onclick="modalEscalate()">⬆ Escalate</button>
+      <button class="btn" id="modal-ack-btn" onclick="modalAcknowledge()">✓ Acknowledge</button>
+      <button class="btn" onclick="closeModal()" style="margin-left:auto">✕ Close</button>
+    </div>
+  </div>
+</div>
+<style>
+@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+@keyframes slideUp { from { transform:translateY(16px);opacity:0 } to { transform:translateY(0);opacity:1 } }
+.modal-footer { justify-content: flex-start !important; flex-wrap: wrap; }
+</style>
+
+<div class="vx-tooltip" id="vx-tooltip"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+
