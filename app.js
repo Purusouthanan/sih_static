@@ -62,12 +62,12 @@ const defaultBounds = [[28.5, 77.0], [28.7, 77.4]];
 function initLeafletMaps() {
   if (document.getElementById('real-map')) {
     overviewMap = L.map('real-map', { zoomControl: false, attributionControl: false }).fitBounds(defaultBounds);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png').addTo(overviewMap);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png').addTo(overviewMap);
   }
   
   if (document.getElementById('real-riskmap')) {
     riskMap = L.map('real-riskmap', { zoomControl: true }).fitBounds(defaultBounds);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(riskMap);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(riskMap);
   }
 
   const extended = [
