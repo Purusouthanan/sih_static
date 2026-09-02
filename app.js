@@ -91,13 +91,14 @@ function initLeafletMaps() {
     const icon = L.divIcon({ className: 'leaflet-custom-icon', html: iconHtml, iconSize: [40, 40], iconAnchor: [20, 10] });
 
     // Overview marker
-    if (DATA.mapNodes.some(n => n.id === node.id)) {
+    if (overviewMap && DATA.mapNodes.some(n => n.id === node.id)) {
       L.marker([lat, lng], {icon}).addTo(overviewMap)
         .bindTooltip(`<b>${node.id}</b><br>Risk: ${node.risk}%<br>Conf: ${node.conf}%`, {direction: 'top'});
     }
     // Risk map marker
-    L.marker([lat, lng], {icon}).addTo(riskMap)
-      .bindPopup(`
+    if (riskMap) {
+      L.marker([lat, lng], {icon}).addTo(riskMap)
+        .bindPopup(`
         <div style="font-family:Inter,sans-serif;font-size:12px;color:#334155;padding:5px">
           <strong style="color:${node.color};font-size:14px;display:block;margin-bottom:5px">${node.id}</strong>
           <div><b>Status:</b> ${node.riskLevel.toUpperCase()}</div>
@@ -106,6 +107,7 @@ function initLeafletMaps() {
           <div><b>Model:</b> ${node.model}</div>
         </div>
       `);
+    }
   });
 
   // Highlight Zone
@@ -747,18 +749,20 @@ function modalViewOnMap() {
   try { initLeafletMaps(); } catch(e) {}
   try { renderModelPerf(); } catch(e) {}
   try { renderConfChart(); } catch(e) {}
-  try { setTimeout(() => { } catch(e) {}
-  try { drawFingerprintChart(); } catch(e) {}
-  try { drawMNCCanvas(); } catch(e) {}
-  try { }, 120); } catch(e) {}
-  try { document.querySelectorAll('.nav-item').forEach(el => { } catch(e) {}
-  try { el.addEventListener('click', () => { } catch(e) {}
-  try { setTimeout(() => { } catch(e) {}
-  try { drawFingerprintChart(); } catch(e) {}
-  try { drawMNCCanvas(); } catch(e) {}
-  try { }, 60); } catch(e) {}
-  try { }); } catch(e) {}
-  try { }); } catch(e) {}
+
+  setTimeout(() => {
+    try { drawFingerprintChart(); } catch(e) {}
+    try { drawMNCCanvas(); } catch(e) {}
+  }, 120);
+
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.addEventListener('click', () => {
+      setTimeout(() => {
+        try { drawFingerprintChart(); } catch(e) {}
+        try { drawMNCCanvas(); } catch(e) {}
+      }, 60);
+    });
+  });
 })();
 // ============================================================
 // DEMO SCENARIO LOGIC
