@@ -121,7 +121,6 @@ function initLeafletMaps() {
 // THREATS PANEL
 // ============================================================
 function renderThreats() {
-  try {
   const container = document.getElementById('threats-panel');
   container.innerHTML = '';
   DATA.threats.forEach(t => {
@@ -158,7 +157,6 @@ function renderThreats() {
 // ============================================================
 let telemOffset = 0;
 function renderTelemetry() {
-  try {
   const tbody = document.getElementById('telem-tbody');
   if (!tbody) return;
   const now = new Date();
@@ -293,7 +291,6 @@ function filterAlerts(filter) {
 // EVENTS PAGE
 // ============================================================
 function renderEvents() {
-  try {
   const container = document.getElementById('events-list');
   if (!container) return;
   DATA.events.forEach(ev => {
@@ -374,7 +371,6 @@ function closeModal(e) {
 // PIPELINE
 // ============================================================
 function renderPipeline() {
-  try {
   const wrap = document.getElementById('pipeline-wrap');
   if (!wrap) return;
   wrap.innerHTML = '';
@@ -427,7 +423,6 @@ const LAYERS = [
   { name:'Industrial',    color:'#fb923c', checked:true  },
 ];
 function renderLayers() {
-  try {
   const container = document.getElementById('layer-list');
   if (!container) return;
   container.innerHTML = '';
